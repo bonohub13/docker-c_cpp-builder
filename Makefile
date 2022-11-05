@@ -13,7 +13,9 @@ build: clean
 	mkdir -p bin
 	cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .
 	cmake --build build
-	$(shell find build/src -maxdepth 1 -type f| while read file; do cp "${file}" bin; done)
+	find build/src -type f -executable | while read f; do \
+		cp -v $$f bin; \
+	done
 
 run:
 	./bin/${BIN}
@@ -27,7 +29,9 @@ rebuild-linux-image:
 docker-build: clean
 	mkdir -p bin
 	docker run --rm -it -v $(shell pwd):/app ${PROJECT_NAME}/linux
-	$(shell find build/src -maxdepth 1 -type f| while read file; do cp "${file}" bin; done)
+	find build/src -type f -executable | while read f; do \
+		cp -v $$f bin; \
+	done
 
 for-docker: # This is for docker-build (DO NOT run this!)
 	cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .
