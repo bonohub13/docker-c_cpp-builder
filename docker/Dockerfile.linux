@@ -1,0 +1,10 @@
+FROM docker:latest
+
+RUN apt update && apt upgrade -y
+RUN apt install -y \
+    cmake \
+    g++
+
+WORKDIR /app
+
+CMD ["make", "for-docker"]
